@@ -35,3 +35,11 @@ http :9001/books
 ```bash
 ./gradlew bootBuildImage
 ```
+
+## Pipeline
+
+```bash
+# to run `grype` to check for vulnerabilities:
+./gradlew build
+grype .
+```
