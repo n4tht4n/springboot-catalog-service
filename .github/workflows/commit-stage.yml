@@ -1,45 +1,45 @@
 name: Commit Stage
 on: push
 
-  jobs:
-    # Each workflow is organized into _jobs_ that run in parallel.
-    # Each job is executed in a _runner_ instance provided by GitHub.
-    build:
-      name: Build and Test
-      runs-on: ubuntu-22.04
-      permissions:
-        # Be specific about which _permissions_ the job should have...
-        # This example has read access to the Git repo and write access to the security events when submitting
-        # a vulnerability report to GitHub.
-        contents: read
-        security-events: write
-      steps:
-        # Each job is composed of _steps_ which are executed sequentially.
-        # A step could be either a shell command or an _action_. Actions are custom apps used to perform
-        # complex tasks in a more structured and reproducible way.
-        - name: Checkout source code
-          uses: actions/checkout@v3
-        - name: Set up JDK
-          uses: actions/setup-java@v3
-          with:
-            distribution: temurin
-            java-version: 17
-            cache: gradle
-        - name: Code vulnerability scanning
-          uses: anchore/scan-action@v3
-          id: scan
-          with:
-            path: "${{ github.workspace }}"
-            fail-build: false
-            severity-cutoff: high
-            acs-report-enable: true
-        - name: Upload vulnerability report
-          # This only works with public GitHub repos!?
-          uses: github/codeql-action/upload-sarif@v2
-          if: success() || failure()
-          with:
-            sarif_file: ${{ steps.scan.outputs.sarif }}
-        - name: Build, unit tests and integration tests
-          run: |
-            chmod +x gradlew
-            ./gradlew build
+jobs:
+  # Each workflow is organized into _jobs_ that run in parallel.
+  # Each job is executed in a _runner_ instance provided by GitHub.
+  build:
+    name: Build and Test
+    runs-on: ubuntu-22.04
+    permissions:
+      # Be specific about which _permissions_ the job should have...
+      # This example has read access to the Git repo and write access to the security events when submitting
+      # a vulnerability report to GitHub.
+      contents: read
+      security-events: write
+    steps:
+      # Each job is composed of _steps_ which are executed sequentially.
+      # A step could be either a shell command or an _action_. Actions are custom apps used to perform
+      # complex tasks in a more structured and reproducible way.
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Code vulnerability scanning
+        uses: anchore/scan-action@v3
+        id: scan
+        with:
+          path: "${{ github.workspace }}"
+          fail-build: false
+          severity-cutoff: high
+          acs-report-enable: true
+      - name: Upload vulnerability report
+        # This only works with public GitHub repos!?
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
+      - name: Build, unit tests and integration tests
+        run: |
+          chmod +x gradlew
+          ./gradlew build
