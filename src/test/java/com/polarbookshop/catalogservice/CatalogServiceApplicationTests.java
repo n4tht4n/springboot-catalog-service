@@ -20,8 +20,7 @@ import com.polarbookshop.catalogservice.domain.Book;
  *
  * When working with web apps, tests can be run against a mocked web environment
  * or a running server. Use the `webEnvironment` attribute with
- * `@SpringBootTest`
- * to configure this.
+ * `@SpringBootTest` to configure this.
  *
  * With the mocked web environment, you can use the `MockMvc` object to send
  * HTTP requests and check their results. When running the server, you could
