@@ -21,6 +21,11 @@ public class PolarProperties {
 	 */
 	private String greeting;
 
+	/**
+	 * This will be a nested structure, prefixed `polar.testdata.*`.
+	 */
+	private TestDataProperties testdata;
+
 	public String getGreeting() {
 		return this.greeting;
 	}
@@ -28,4 +33,13 @@ public class PolarProperties {
 	public void setGreeting(String greeting) {
 		this.greeting = greeting;
 	}
+
+	public TestDataProperties getTestdata() {
+		return this.testdata;
+	}
+
+	public void setTestdata(TestDataProperties props) {
+		this.testdata = props;
+	}
 }
+

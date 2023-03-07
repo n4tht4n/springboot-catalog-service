@@ -1,7 +1,7 @@
 package com.polarbookshop.catalogservice.demo;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -9,15 +9,15 @@ import com.polarbookshop.catalogservice.domain.Book;
 import com.polarbookshop.catalogservice.domain.BookRepository;
 
 /**
- * Annotating this class with `@Profile` loads and activates this component only
- * when the `testdata` profile is active.
+ * Annotating this class with `@ConditionalOnProperty` loads and activates this component only
+ * when the specified `polar.testdata.enabled` property is available and set to `true`.
  *
  * So you're quite flexible when you would need this component in your application.
- * E.g. you could use this profile when running the application locally, in a dev
- * or staging environment to generate some test data in the repository.
+ * You can put this property into a profile-specific property file and activate
+ * this profile when needed, like running locally or in a dev or staging environment.
  */
 @Component
-@Profile("testdata")
+@ConditionalOnProperty(name = "polar.testdata.enabled", havingValue = "true")
 public class BookDataLoader {
 	private final BookRepository bookRepository;
 
